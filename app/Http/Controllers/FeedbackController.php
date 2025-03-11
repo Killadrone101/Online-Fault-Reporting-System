@@ -14,7 +14,7 @@ class FeedbackController extends Controller
     {
         //
         $feedbacks = Feedback::with('FaultReport')->get();
-        return view('admin.feedback', compact('feedbacks'));
+        return view('admin.feedbacks', compact('feedbacks'));
     }
 
     /**
