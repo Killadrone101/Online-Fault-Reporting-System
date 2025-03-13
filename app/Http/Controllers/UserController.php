@@ -25,6 +25,8 @@ class UserController extends Controller
     public function create()
     {
         //
+        $users = User::all();
+        return view('admin.users-create', compact('users'));
     }
 
     /**
@@ -33,6 +35,21 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:4|confirmed',
+            'role' => 'required|in:admin,student,manager',
+        ]);
+
+        User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => bcrypt($validated['password']),
+            'role' => $validated['role'],
+        ]);
+
+        return redirect()->route('users')->with('success', 'User created successfully.');
     }
 
     /**
@@ -62,8 +79,10 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
         //
+        $user->delete();
+        return back()->with('success', 'User deleted successfully.');
     }
 }
