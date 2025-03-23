@@ -6,30 +6,57 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        {{-- <x-application-logo class="block h-9 w-auto fill-current text-gray-800" /> --}}
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('users')" :active="request()->routeIs('users')">
-                        {{ __('Users') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('departments')" :active="request()->routeIs('departments')">
-                        {{ __('Departments') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('employees')" :active="request()->routeIs('employees')">
-                        {{ __('Employees') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('reports')" :active="request()->routeIs('reports')">
-                        {{ __('Reports') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('feedbacks')" :active="request()->routeIs('feedbacks')">
-                        {{ __('Feedback') }}
-                    </x-nav-link>
+
+                    <!-- Admin Navigation Links-->
+                    @if(Auth::user()->role === 'admin')
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.users')" :active="request()->routeIs('users')">
+                            {{ __('Users') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.departments')" :active="request()->routeIs('departments')">
+                            {{ __('Departments') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.reports')" :active="request()->routeIs('reports')">
+                            {{ __('Reports') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.feedbacks')" :active="request()->routeIs('feedbacks')">
+                            {{ __('Feedback') }}
+                        </x-nav-link>
+                    @endif
+
+                    
+                    <!-- Registrar Navigation Links -->
+                    @if(Auth::user()->role === 'manager')
+                        <x-nav-link :href="route('manager.dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('manager.reports')" :active="request()->routeIs('reports')">
+                            {{ __('Fault Reports') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('manager.feedbacks')" :active="request()->routeIs('feedbacks')">
+                            {{ __('Feedbacks') }}
+                        </x-nav-link>
+                    @endif
+
+                    <!-- Applicant Navigation Links -->
+                    @if(Auth::user()->role === 'student')
+                        <x-nav-link :href="route('student.dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('student.reports')" :active="request()->routeIs('student.reports')">
+                            {{ __('Reports') }}
+                        </x-nav-link>
+                    @endif
+
+
                 </div>
             </div>
 
