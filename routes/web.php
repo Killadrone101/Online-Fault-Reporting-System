@@ -6,6 +6,8 @@ use App\Http\Controllers\FaultReportController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\WorkerController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\Manager\ManagerController;
+use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\UserController;
 
 
@@ -15,12 +17,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // // Dashboard
-    // Route::get('/dashboard', function () {
-    //     return view('dashboard');
-    // })->name('dashboard');
-
-     //=======================================================================================
+    //=======================================================================================
     // ADMIN ROUTES
     //=======================================================================================
 
@@ -44,7 +41,32 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Reports
     Route::get('/reports', [FaultReportController::class, 'index'])->name('reports');
     Route::resource('reports', FaultReportController::class)->except(['index']);
+    //=======================================================================================
 
+
+    //=======================================================================================
+    // MANAGER ROUTES
+    //=======================================================================================
+
+    // Dashboard
+    Route::get('/manager/dashboard', [ManagerController::class, 'dashboard'])
+        ->name('manager.dashboard')
+        ->middleware(['auth', 'role:manager']);
+
+    //=======================================================================================
+    
+
+    //=======================================================================================
+    // STUDENT ROUTES
+    //=======================================================================================
+
+    // Dashboard
+    Route::get('/student/dashboard', [StudentController::class, 'dashboard'])
+        ->name('student.dashboard')
+        ->middleware(['auth', 'role:student']);
+
+    //=======================================================================================
+    
 
     // Profile (from Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
