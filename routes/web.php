@@ -27,19 +27,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->middleware(['auth', 'role:admin']);
 
     // Users
-    Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/admin/users', [UserController::class, 'index'])
+    ->name('admin.users')
+    ->middleware(['auth', 'role:admin']);
     Route::resource('users', UserController::class)->except(['index']);
 
     // Departments
-    Route::get('/departments', [DepartmentController::class, 'index'])->name('departments');
+    Route::get('/admin/departments', [DepartmentController::class, 'index'])
+    ->name('admin.departments')
+    ->middleware(['auth', 'role:admin']);
     Route::resource('departments', DepartmentController::class)->except(['index']);
 
     // Feedback
-    Route::get('/feedbacks', [FeedbackController::class, 'index'])->name('feedbacks');
+    Route::get('/admin/feedbacks', [FeedbackController::class, 'index'])
+    ->name('admin.feedbacks')
+    ->middleware(['auth', 'role:admin']);
     Route::resource('feedbacks', FeedbackController::class)->except(['index']);
 
     // Reports
-    Route::get('/reports', [FaultReportController::class, 'index'])->name('reports');
+    Route::get('/admin/reports', [FaultReportController::class, 'index'])
+    ->name('admin.reports')
+    ->middleware(['auth', 'role:admin']);
     Route::resource('reports', FaultReportController::class)->except(['index']);
     //=======================================================================================
 
