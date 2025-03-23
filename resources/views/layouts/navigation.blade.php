@@ -33,7 +33,7 @@
                     @endif
 
                     
-                    <!-- Registrar Navigation Links -->
+                    <!-- Manager Navigation Links -->
                     @if(Auth::user()->role === 'manager')
                         <x-nav-link :href="route('manager.dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
@@ -46,7 +46,7 @@
                         </x-nav-link>
                     @endif
 
-                    <!-- Applicant Navigation Links -->
+                    <!-- Student Navigation Links -->
                     @if(Auth::user()->role === 'student')
                         <x-nav-link :href="route('student.dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
