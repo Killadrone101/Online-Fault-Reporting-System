@@ -15,30 +15,35 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    // // Dashboard
+    // Route::get('/dashboard', function () {
+    //     return view('dashboard');
+    // })->name('dashboard');
+
+     //=======================================================================================
+    // ADMIN ROUTES
+    //=======================================================================================
+
     // Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/admin/dashboard', [UserController::class, 'dashboard'])
+        ->name('admin.dashboard')
+        ->middleware(['auth', 'role:admin']);
 
     // Users
     Route::get('/users', [UserController::class, 'index'])->name('users');
     Route::resource('users', UserController::class)->except(['index']);
 
     // Departments
-    Route::get('/departments', [UserController::class, 'index'])->name('departments');
-    Route::resource('departments', UserController::class)->except(['index']);
-
-    // Employees
-    Route::get('/employees', [UserController::class, 'index'])->name('employees');
-    Route::resource('employees', UserController::class)->except(['index']);
+    Route::get('/departments', [DepartmentController::class, 'index'])->name('departments');
+    Route::resource('departments', DepartmentController::class)->except(['index']);
 
     // Feedback
-    Route::get('/feedbacks', [UserController::class, 'index'])->name('feedbacks');
-    Route::resource('feedbacks', UserController::class)->except(['index']);
+    Route::get('/feedbacks', [FeedbackController::class, 'index'])->name('feedbacks');
+    Route::resource('feedbacks', FeedbackController::class)->except(['index']);
 
     // Reports
-    Route::get('/reports', [UserController::class, 'index'])->name('reports');
-    Route::resource('reports', UserController::class)->except(['index']);
+    Route::get('/reports', [FaultReportController::class, 'index'])->name('reports');
+    Route::resource('reports', FaultReportController::class)->except(['index']);
 
 
     // Profile (from Breeze)

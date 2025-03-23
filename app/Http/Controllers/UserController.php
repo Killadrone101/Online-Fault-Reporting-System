@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
+     * Display the admin dashboard.
+     */
+    public function dashboard() {
+        return view('admin.dashboard');
+    }
+    
+    /**
      * Display a listing of the resource.
      */
     public function index()

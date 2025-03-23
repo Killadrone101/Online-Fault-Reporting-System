@@ -14,7 +14,7 @@ class FaultReportController extends Controller
     {
         //
         $reports = FaultReport::with(['user', 'feedback'])->latest()->get();
-        return view('admin.fault-reports', compact('reports'));
+        return view('admin.reports', compact('reports'));
     }
 
     /**
