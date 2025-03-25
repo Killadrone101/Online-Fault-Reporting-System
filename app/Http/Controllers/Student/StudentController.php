@@ -13,16 +13,27 @@ class StudentController extends Controller
     /**
      * Display the admin dashboard.
      */
-    public function dashboard() {
+    public function dashboard()
+    {
 
         // Get the currently authenticated user
         $user = Auth::user();
 
         $reports = FaultReport::with(['user'])
-        ->where('user_id', $user->id)
-        ->get();
+            ->where('user_id', $user->id)
+            ->get();
 
-        return view('student.dashboard', compact('reports'));
+        // Calculate the report counts
+        $totalReports = $reports->count();
+        $pendingReports = $reports->where('status', 'pending')->count();
+        $resolvedFaults = $reports->where('status', 'resolved')->count();
+
+        return view('student.dashboard', compact(
+            'reports',
+            'totalReports',
+            'pendingReports',
+            'resolvedFaults'
+        ));
     }
 
     /**

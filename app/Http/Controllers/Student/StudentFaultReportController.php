@@ -18,8 +18,8 @@ class StudentFaultReportController extends Controller
         $user = Auth::user();
 
         $reports = FaultReport::with(['user'])
-        ->where('user_id', $user->id)
-        ->get();
+            ->where('user_id', $user->id)
+            ->get();
         return view('student.reports', compact('reports'));
     }
 
@@ -36,7 +36,24 @@ class StudentFaultReportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the request
+        $validated = $request->validate([
+            'issue_type' => 'required|string|max:255',
+            // 'block' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        // Create new fault report
+        $report = new FaultReport();
+        $report->user_id = Auth::id();
+        $report->category = $validated['issue_type'];
+        // $report->block = $validated['block'];
+        $report->description = $validated['description'];
+        $report->status = 'pending'; // Default status
+        $report->save();
+
+        return redirect()->route('student.dashboard')
+            ->with('success', 'Fault report submitted successfully!');
     }
 
     /**

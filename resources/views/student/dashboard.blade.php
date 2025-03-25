@@ -10,9 +10,28 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     
+                    <!-- Stats Cards - Fixed with w-full and responsive design -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 w-full">
+                        <!-- Total Reports -->
+                        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm w-full">
+                            <h3 class="text-lg font-medium text-gray-700">Total Reports</h3>
+                            <p class="text-3xl font-bold text-gray-900">{{ $totalReports ?? 0 }}</p>
+                        </div>
+                        
+                        <!-- Pending Reports -->
+                        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm w-full">
+                            <h3 class="text-lg font-medium text-gray-700">Pending Reports</h3>
+                            <p class="text-3xl font-bold text-yellow-600">{{ $pendingReports ?? 0 }}</p>
+                        </div>
+                        
+                        <!-- Resolved Faults -->
+                        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm w-full">
+                            <h3 class="text-lg font-medium text-gray-700">Resolved Faults</h3>
+                            <p class="text-3xl font-bold text-green-600">{{ $resolvedFaults ?? 0 }}</p>
+                        </div>
+                    </div>
 
-                    <h1 class="font-semibold text-xl text-gray-800 leading-tight">Recent Fault Reports</h1>
-                    <br>
+                    <h1 class="font-semibold text-xl text-gray-800 leading-tight mb-4">Recent Fault Reports</h1>
 
                     <!-- Applications Table -->
                     <div class="overflow-x-auto shadow-md sm:rounded-lg">
@@ -35,11 +54,9 @@
                                         {{ $report->category ?? "N/A" }}
                                     </td>
                                     <td class="px-6 py-4 text-gray-900">{{ $report->user->department->name ?? "N/A" }}</td>
-                                    <td class="px-6 py-4 text-gray-900">{{ $report->created_at ?? "N/A" }}</td>
+                                    <td class="px-6 py-4 text-gray-900">{{ $report->created_at->format('M d, Y H:i') ?? "N/A" }}</td>
                                     <td class="px-6 py-4 text-gray-900">{{ $report->status ?? "N/A" }}</td>
                                     <td class="px-6 py-4">
-
-                                        <!-- Remove -->
                                         <form method="POST" action="{{ route('student.reports.destroy', $report) }}" class="inline" x-on:submit.prevent="if(confirm('Are you sure?')) { $el.submit(); show = false }">
                                             @csrf
                                             @method('DELETE')
@@ -59,8 +76,6 @@
                             </tbody>
                         </table>
                     </div>
-
-
                 </div>
             </div>
         </div>
