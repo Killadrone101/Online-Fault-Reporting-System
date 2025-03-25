@@ -23,7 +23,9 @@
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">No</th>
-                                    <th scope="col" class="px-6 py-3">User Name</th>
+                                    <th scope="col" class="px-6 py-3">Name</th>
+                                    <th scope="col" class="px-6 py-3">Email</th>
+                                    <th scope="col" class="px-6 py-3">Residence</th>
                                     <th scope="col" class="px-6 py-3">Role</th>
                                     <th scope="col" class="px-6 py-3">Action</th>
                                 </tr>
@@ -35,6 +37,18 @@
                                     <td class="px-6 py-4 font-medium text-gray-900">
                                         {{ $user->name }}
                                     </td>
+                                    <td class="px-6 py-4 font-medium text-gray-900">
+                                        {{ $user->email }}
+                                    </td>
+                                    @if ($user->role == 'student')
+                                        <td class="px-6 py-4 font-medium text-gray-900">
+                                            {{ $user->residence }}
+                                        </td>
+                                    @else
+                                        <td class="px-6 py-4 font-medium text-gray-900">
+                                            N/A
+                                        </td>
+                                    @endif
                                     <td class="px-6 py-4 text-gray-900">{{ $user->role }}</td>
                                     <td class="px-6 py-4">
                                         <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" class="inline" x-on:submit.prevent="if(confirm('Are you sure?')) { $el.submit(); show = false }">
