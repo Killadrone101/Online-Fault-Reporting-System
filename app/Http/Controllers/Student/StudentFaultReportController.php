@@ -83,8 +83,9 @@ class StudentFaultReportController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(FaultReport $report)
     {
-        //
+        $report->delete();
+        return back()->with('success', 'User deleted successfully.');
     }
 }
