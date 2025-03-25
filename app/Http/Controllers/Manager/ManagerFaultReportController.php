@@ -13,7 +13,7 @@ class ManagerFaultReportController extends Controller
      */
     public function index()
     {
-        $reports = FaultReport::with(['feedback', 'user'])->get();
+        $reports = FaultReport::with(['user'])->get();
         return view('manager.reports', compact('reports'));
     }
 
@@ -36,9 +36,11 @@ class ManagerFaultReportController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(FaultReport $report)
     {
-        //
+        // Laravel will automatically fetch the report
+        // $report->load('user'); // Eager load user relationship
+        return view('manager.view-reports', compact('report'));
     }
 
     /**

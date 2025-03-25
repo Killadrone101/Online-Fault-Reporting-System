@@ -46,7 +46,7 @@
                                     <td class="px-6 py-4 text-gray-900">{{ $report->status }}</td>
                                     <td class="px-6 py-4">
                                         <!-- View Button -->
-                                        <a href="{{ route('admin.reports.show', $report->id) }}" 
+                                        <a href="{{ route('manager.reports.show', $report) }}" 
                                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                             View
                                          </a>
