@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\FaultReport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
@@ -12,7 +14,15 @@ class StudentController extends Controller
      * Display the admin dashboard.
      */
     public function dashboard() {
-        return view('student.dashboard');
+
+        // Get the currently authenticated user
+        $user = Auth::user();
+
+        $reports = FaultReport::with(['user'])
+        ->where('user_id', $user->id)
+        ->get();
+
+        return view('student.dashboard', compact('reports'));
     }
 
     /**
