@@ -7,7 +7,10 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\WorkerController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\Manager\ManagerController;
+use App\Http\Controllers\Manager\ManagerFaultReportController;
+use App\Http\Controllers\Manager\ManagerFeedbackController;
 use App\Http\Controllers\Student\StudentController;
+use App\Http\Controllers\Student\StudentFaultReportController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
@@ -67,10 +70,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
         // Feedback
-        Route::get('/feedbacks', [FeedbackController::class, 'index'])
+        Route::get('/feedbacks', [ManagerFeedbackController::class, 'index'])
             ->name('manager.feedbacks')
             ->middleware('role:manager');
-        Route::resource('feedbacks', FeedbackController::class)->except(['index'])
+        Route::resource('feedbacks', ManagerFeedbackController::class)->except(['index'])
             ->names([
                 'create' => 'manager.feedbacks.create',
                 'store' => 'manager.feedbacks.store',
@@ -82,10 +85,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
 
         // Reports
-        Route::get('/reports', [FaultReportController::class, 'index'])
+        Route::get('/reports', [ManagerFaultReportController::class, 'index'])
             ->name('manager.reports')
             ->middleware('role:manager');
-        Route::resource('reports', FaultReportController::class)->except(['index'])
+        Route::resource('reports', ManagerFaultReportController::class)->except(['index'])
             ->names([
                 'create' => 'manager.reports.create',
                 'store' => 'manager.reports.store',
@@ -106,10 +109,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->middleware('role:student');
         
         // Reports
-        Route::get('/reports', [FaultReportController::class, 'index'])
+        Route::get('/reports', [StudentFaultReportController::class, 'index'])
             ->name('student.reports')
             ->middleware('role:student');
-        Route::resource('reports', FaultReportController::class)->except(['index'])
+        Route::resource('reports', StudentFaultReportController::class)->except(['index'])
             ->names([
                 'create' => 'student.reports.create',
                 'store' => 'student.reports.store',
