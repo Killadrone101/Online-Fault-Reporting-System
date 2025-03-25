@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900">
                     <!-- Search Bar -->
                     <div class="flex justify-between mb-4 ">
-                        <a href="{{ route('users.create') }}" class="bg-green-500 hover:bg-green-700 text-dark font-bold py-2 px-4 rounded">
+                        <a href="{{ route('admin.users.create') }}" class="bg-green-500 hover:bg-green-700 text-dark font-bold py-2 px-4 rounded">
                             Add User
                         </a>
                         <input type="text" id="search" placeholder="Search users..." class="rounded-lg px-4 py-2 w-64 border border-gray-300 text-gray-900">
@@ -37,7 +37,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-gray-900">{{ $user->role }}</td>
                                     <td class="px-6 py-4">
-                                        <form method="POST" action="{{ route('users.destroy', $user->id) }}" class="inline" x-on:submit.prevent="if(confirm('Are you sure?')) { $el.submit(); show = false }">
+                                        <form method="POST" action="{{ route('admin.users.destroy', $user->id) }}" class="inline" x-on:submit.prevent="if(confirm('Are you sure?')) { $el.submit(); show = false }">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-900 mx-2">
