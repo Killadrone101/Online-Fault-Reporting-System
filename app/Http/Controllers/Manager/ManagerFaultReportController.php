@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
+use App\Models\FaultReport;
 use Illuminate\Http\Request;
 
 class ManagerFaultReportController extends Controller
@@ -12,7 +13,8 @@ class ManagerFaultReportController extends Controller
      */
     public function index()
     {
-        //
+        $reports = FaultReport::with(['feedback', 'user'])->get();
+        return view('manager.reports', compact('reports'));
     }
 
     /**
