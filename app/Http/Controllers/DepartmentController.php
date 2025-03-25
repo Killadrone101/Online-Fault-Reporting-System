@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -13,7 +14,7 @@ class DepartmentController extends Controller
     public function index()
     {
         //
-        $departments = Department::with(['staff', 'workers'])->get();
+        $departments = Department::with(['users'])->get();
         return view('admin.departments', compact('departments'));
     }
 
@@ -22,7 +23,8 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        return view('admin.create-department', compact('users'));
     }
 
     /**
@@ -30,7 +32,24 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:departments,name',
+            'manager' => 'required|exists:users,id,role,manager',
+        ]);
+
+        // Create the department
+        $department = Department::create([
+            'name' => $validated['name'],
+            'staff_id' => $validated['manager'],  
+        ]);
+
+        // Update the manager's department association
+        User::where('id', $validated['manager'])
+            ->update(['department_id' => $department->id]);
+
+        return redirect()
+            ->route('admin.departments')
+            ->with('success', 'Department created successfully.');
     }
 
     /**
@@ -38,7 +57,8 @@ class DepartmentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $department = Department::with(['user'])->findOrFail($id);
+        return view('admin.view-department', compact('department'));
     }
 
     /**
