@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
+use App\Models\FaultReport;
 use Illuminate\Http\Request;
 
 class ManagerController extends Controller
@@ -12,7 +13,9 @@ class ManagerController extends Controller
      * Display the admin dashboard.
      */
     public function dashboard() {
-        return view('manager.dashboard');
+
+        $reports = FaultReport::with(['user'])->get();
+        return view('manager.dashboard', compact('reports'));
     }
 
     /**
