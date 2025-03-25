@@ -24,12 +24,6 @@
                         <x-nav-link :href="route('admin.departments')" :active="request()->routeIs('departments')">
                             {{ __('Departments') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.reports')" :active="request()->routeIs('reports')">
-                            {{ __('Reports') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('admin.feedbacks')" :active="request()->routeIs('feedbacks')">
-                            {{ __('Feedback') }}
-                        </x-nav-link>
                     @endif
 
                     
