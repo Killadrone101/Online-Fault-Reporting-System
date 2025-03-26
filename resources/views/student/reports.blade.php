@@ -39,7 +39,13 @@
                                     </td>
                                     <td class="px-6 py-4 text-gray-900">{{ $report->user->department->name ?? "N/A" }}</td>
                                     <td class="px-6 py-4 text-gray-900">{{ $report->created_at ?? "N/A" }}</td>
-                                    <td class="px-6 py-4 text-gray-900">{{ $report->status ?? "N/A" }}</td>
+                                    <td class="px-6 py-4 text-gray-900">
+                                        <span class="px-2.5 py-1 text-xs font-medium rounded-full 
+                                            {{ $report->status === 'solved' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 
+                                               'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' }}">
+                                            {{ $report->status ?? "N/A" }}
+                                        </span>
+                                    </td>
                                     <td class="px-6 py-4">
 
                                         <!-- Remove -->
