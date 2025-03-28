@@ -16,6 +16,14 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
+            <!-- Notification -->
+            @if(session('success'))
+                <x-notification type="success" :message="session('success')" />
+            @endif
+            @if(session('error'))
+                <x-notification type="error" :message="session('error')" />
+            @endif
+            
             @include('layouts.navigation')
 
             <!-- Page Heading -->
