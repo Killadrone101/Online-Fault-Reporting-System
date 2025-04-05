@@ -47,6 +47,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:4|confirmed',
             'role' => 'required|in:student,assistant,manager,admin',
+            'block' => 'required|string|max:255'
         ]);
 
         User::create([
@@ -54,6 +55,7 @@ class UserController extends Controller
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
             'role' => $validated['role'],
+            'residence' => $validated['block'],
         ]);
 
         return redirect()->route('admin.users')->with('success', 'User created successfully.');
