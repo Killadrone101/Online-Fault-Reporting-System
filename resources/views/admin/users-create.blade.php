@@ -44,6 +44,23 @@
                             <x-input-label for="password_confirmation" value="{{ __('Confirm Password') }}" class="text-gray-700" />
                             <x-text-input id="password_confirmation" class="block mt-1 w-full text-gray-900" type="password" name="password_confirmation" required />
                         </div>
+
+                        <!-- Block/Room Dropdown -->
+                        <div>
+                            <x-input-label for="block" value="{{ __('Block/Room') }}" />
+                            <select id="block" name="block" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                                <option value="N/A">Select Block</option>
+                                <option value="Block A">Block A</option>
+                                <option value="Block B">Block B</option>
+                                <option value="Block C">Block C</option>
+                                <option value="Block D">Block D</option>
+                                <option value="Admin Block">Admin Block</option>
+                                <option value="N/A">None</option>
+                            </select>
+                            @error('block')
+                                <span class="text-red-600 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
                 
                         <!-- Role -->
                         <div>

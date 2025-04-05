@@ -44,6 +44,10 @@
                                         <td class="px-6 py-4 font-medium text-gray-900">
                                             {{ $user->residence }}
                                         </td>
+                                    @elseif ($user->role == 'assistant')
+                                        <td class="px-6 py-4 font-medium text-gray-900">
+                                            {{ $user->residence }}
+                                        </td>
                                     @else
                                         <td class="px-6 py-4 font-medium text-gray-900">
                                             N/A
