@@ -16,10 +16,25 @@ class ReportsController extends Controller
     {
         // Get the currently authenticated user
         $user = Auth::user();
-
-        $reports = FaultReport::with(['user'])
-            ->where('user_id', $user->id)
-            ->get();
+        
+        // Check if the user is an admin/assistant who can view all reports from a block
+        if ($user->role === 'admin' || $user->role === 'assistant') {
+            // Get reports only from users in the same residence block as the current user
+            $reports = FaultReport::with(['user'])
+                ->whereHas('user', function($query) use ($user) {
+                    $query->where('residence', $user->residence);
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } 
+        // For regular users, show only their own reports
+        else {
+            $reports = FaultReport::with(['user'])
+                ->where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+        
         return view('assistant.reports', compact('reports'));
     }
 
