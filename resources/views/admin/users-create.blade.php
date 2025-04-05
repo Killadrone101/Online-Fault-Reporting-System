@@ -50,6 +50,7 @@
                             <x-input-label for="role" value="{{ __('Role') }}" class="text-gray-700" />
                             <select name="role" id="role" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 text-gray-900" required>
                                 <option value="student">Student</option>
+                                <option value="assistant">RA</option>
                                 <option value="manager">Department Manager</option>
                                 <option value="admin">Admin</option>
                             </select>
