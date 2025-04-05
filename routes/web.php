@@ -4,13 +4,15 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FaultReportController;
 use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\WorkerController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\Manager\ManagerController;
 use App\Http\Controllers\Manager\ManagerFaultReportController;
 use App\Http\Controllers\Manager\ManagerFeedbackController;
 use App\Http\Controllers\Student\StudentController;
 use App\Http\Controllers\Student\StudentFaultReportController;
+use App\Http\Controllers\Assistant\AssistantController;
+use App\Http\Controllers\Assistant\FeedbackController as AssistantFeedbackController;
+use App\Http\Controllers\Assistant\ReportsController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
@@ -56,7 +58,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'update' => 'admin.departments.update',
                 'destroy' => 'admin.departments.destroy',
             ]);
-
     });
 
     //=======================================================================================
@@ -82,7 +83,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'update' => 'manager.feedbacks.update',
                 'destroy' => 'manager.feedbacks.destroy',
             ]);
-        
+
 
         // Reports
         Route::get('/reports', [ManagerFaultReportController::class, 'index'])
@@ -107,7 +108,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard', [StudentController::class, 'dashboard'])
             ->name('student.dashboard')
             ->middleware('role:student');
-        
+
         // Reports
         Route::get('/reports', [StudentFaultReportController::class, 'index'])
             ->name('student.reports')
@@ -121,6 +122,44 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'update' => 'student.reports.update',
                 'destroy' => 'student.reports.destroy',
             ]);
+    });
+
+    //=======================================================================================
+    // RA ROUTES
+    //=======================================================================================
+    Route::prefix('assistant')->group(function () {
+        // Dashboard
+        Route::get('/dashboard', [AssistantController::class, 'dashboard'])
+            ->name('assistant.dashboard')
+            ->middleware('role:assistant');
+
+        // Reports
+        Route::get('/reports', [ ReportsController::class, 'index'])
+            ->name('assistant.reports')
+            ->middleware('role:assistant');
+        Route::resource('reports', ReportsController::class)->except(['index'])
+            ->names([
+                'create' => 'assistant.reports.create',
+                'store' => 'assistant.reports.store',
+                'show' => 'assistant.reports.show',
+                'edit' => 'assistant.reports.edit',
+                'update' => 'assistant.reports.update',
+                'destroy' => 'assistant.reports.destroy',
+            ]);
+
+        // Feedbacks
+        Route::get('/feedbacks', [ AssistantFeedbackController::class, 'index'])
+            ->name('assistant.feedbacks')
+            ->middleware('role:assistant');
+        Route::resource('feedbacks', AssistantFeedbackController::class)->except(['index'])
+            ->names([
+                'create' => 'feedbacks.reports.create',
+                'store' => 'feedbacks.reports.store',
+                'show' => 'feedbacks.reports.show',
+                'edit' => 'feedbacks.reports.edit',
+                'update' => 'feedbacks.reports.update',
+                'destroy' => 'feedbacks.reports.destroy',
+            ]);
 
     });
 
@@ -133,4 +172,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
