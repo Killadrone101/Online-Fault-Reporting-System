@@ -2,16 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Models\FaultReport;
+use App\Models\Feedback;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
     /**
      * Display the admin dashboard.
      */
-    public function dashboard() {
-        return view('admin.dashboard');
+    public function dashboard()
+    {
+        // User statistics
+        $totalUsers = User::count();
+        
+        // Report statistics
+        $totalReports = FaultReport::count();
+        $pendingReports = FaultReport::where('status', 'pending')->count();
+        $resolvedReports = FaultReport::where('status', 'resolved')->count();
+        $recentReports = FaultReport::with('user')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+        
+        // Department statistics
+        $totalDepartments = Department::count();
+        $departments = Department::with(['staff'])
+            ->withCount([
+                'staff as staff_count' => function($query) {
+                    $query->select(DB::raw('count(*)'));
+                },
+                'reports as reports_count'
+            ])
+            ->get();
+        
+        // Feedback statistics
+        $totalFeedback = Feedback::count();
+        $validatedFeedback = Feedback::where('student_validation', true)->count();
+        $recentFeedback = Feedback::orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return view('admin.dashboard', compact(
+            'totalUsers',
+            'totalReports',
+            'pendingReports',
+            'resolvedReports',
+            'recentReports',
+            'totalDepartments',
+            'departments',
+            'totalFeedback',
+            'validatedFeedback',
+            'recentFeedback'
+        ));
     }
     
     /**

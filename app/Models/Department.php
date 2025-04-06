@@ -23,4 +23,16 @@ class Department extends Model
         return $this->hasMany(User::class, 'department_id');
     }
 
+    public function reports()
+    {
+        return $this->hasManyThrough(
+            FaultReport::class,
+            User::class,
+            'staff_id',  // Foreign key on users table (since departments.staff_id = users.id)
+            'user_id',   // Foreign key on fault_reports table
+            'staff_id',  // Local key on departments table
+            'id'        // Local key on users table
+        );
+    }
+
 }
