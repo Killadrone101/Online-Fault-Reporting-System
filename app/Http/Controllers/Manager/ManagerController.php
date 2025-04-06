@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\FaultReport;
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 
 class ManagerController extends Controller
@@ -15,7 +16,33 @@ class ManagerController extends Controller
     public function dashboard() {
 
         $reports = FaultReport::with(['user'])->get();
-        return view('manager.dashboard', compact('reports'));
+
+        // Report statistics
+        $totalReports = FaultReport::count();
+        $pendingReports = FaultReport::where('status', 'pending')->count();
+        $resolvedReports = FaultReport::where('status', 'resolved')->count();
+        $recentReports = FaultReport::with('user')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Feedback statistics
+        $totalFeedback = Feedback::count();
+        $validatedFeedback = Feedback::where('student_validation', true)->count();
+        $recentFeedback = Feedback::orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return view('manager.dashboard', compact(
+            'reports',
+            'totalReports',
+            'pendingReports',
+            'resolvedReports',
+            'recentReports',
+            'totalFeedback',
+            'validatedFeedback',
+            'recentFeedback'
+        ));
     }
 
     /**
