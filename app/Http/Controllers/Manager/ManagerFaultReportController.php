@@ -16,7 +16,7 @@ class ManagerFaultReportController extends Controller
         $reports = FaultReport::with(['user'])
             ->where('validated', true)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
         return view('manager.reports', compact('reports'));
     }
 
@@ -57,9 +57,23 @@ class ManagerFaultReportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, FaultReport $report)
     {
-        //
+        $request->validate([
+            'status' => 'required|in:pending,solved'
+        ]);
+        
+        $updateData = ['status' => $request->status];
+        
+        if ($request->status === 'solved') {
+            $updateData['solved_at'] = now();
+        } else {
+            $updateData['solved_at'] = null;
+        }
+        
+        $report->update($updateData);
+        
+        return back()->with('success', 'Report status updated successfully');
     }
 
     /**

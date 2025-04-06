@@ -13,6 +13,7 @@
 
                     <h1 class="font-semibold text-xl text-gray-800 leading-tight">Recent Fault Reports</h1>
                     <br>
+
                     <!-- Applications Table -->
                     <div class="overflow-x-auto shadow-md sm:rounded-lg">
                         <table class="w-full text-sm text-left text-gray-700">
@@ -23,7 +24,7 @@
                                     <th scope="col" class="px-6 py-3">Block/Room</th>
                                     <th scope="col" class="px-6 py-3">Comments</th>
                                     <th scope="col" class="px-6 py-3">Date Reported</th>
-                                    <th scope="col" class="px-6 py-3">Assigned To</th>
+                                    {{-- <th scope="col" class="px-6 py-3">Assigned To</th> --}}
                                     <th scope="col" class="px-6 py-3">Status</th>
                                     <th scope="col" class="px-6 py-3">Action</th>
                                 </tr>
@@ -36,30 +37,42 @@
                                         {{ $report->category }}
                                     </td>
                                     <td class="px-6 py-4 font-medium text-gray-900">
-                                        {{-- Block --}}
+                                        {{ $report->user->residence ?? 'N/A' }}
                                     </td>
-                                    <td class="px-6 py-4 text-gray-900">{{ $report->description }}</td>
-                                    <td class="px-6 py-4 text-gray-900">{{ $report->created_at }}</td>
-                                    <td class="px-6 py-4 text-gray-900"> {{-- Assigned To --}} </td>
+                                    <td class="px-6 py-4 text-gray-900">{{ Str::limit($report->description, 50) }}</td>
+                                    <td class="px-6 py-4 text-gray-900">{{ $report->created_at->format('M d, Y') }}</td>
+                                    {{-- <td class="px-6 py-4 text-gray-900">N/A</td> --}}
                                     <td class="px-6 py-4 text-gray-900">
-                                        <span class="px-2.5 py-1 text-xs font-medium rounded-full 
-                                            {{ $report->status === 'solved' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 
-                                               'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' }}">
-                                            {{ $report->status }}
-                                        </span>
+                                        <form method="POST" action="{{ route('manager.reports.update', $report) }}" class="inline">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="flex items-center space-x-2">
+                                                <span class="px-2.5 py-1 text-xs font-medium rounded-full 
+                                                    {{ $report->status === 'solved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                                    {{ ucfirst($report->status) }}
+                                                    @if($report->status === 'solved' && $report->solved_at)
+                                                        <span class="text-xs">({{ $report->solved_at->diffForHumans() }})</span>
+                                                    @endif
+                                                </span>
+                                                <select name="status" onchange="this.form.submit()" 
+                                                    class="text-xs rounded-full px-2 py-1 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                                    <option value="pending" {{ $report->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                                                    <option value="solved" {{ $report->status === 'solved' ? 'selected' : '' }}>Solved</option>
+                                                </select>
+                                            </div>
+                                        </form>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <!-- View Button -->
                                         <a href="{{ route('manager.reports.show', $report) }}" 
-                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                            class="font-medium text-blue-600 hover:underline mr-3">
                                             View
-                                         </a>
+                                        </a>
                                     </td>
                                 </tr>
                                 @empty
                                 <tr class="bg-white border-b">
-                                    <td colspan="6" class="px-6 py-4 text-center text-gray-900">
-                                        No reports Available
+                                    <td colspan="8" class="px-6 py-4 text-center text-gray-900">
+                                        No reports available
                                     </td>
                                 </tr>
                                 @endforelse
