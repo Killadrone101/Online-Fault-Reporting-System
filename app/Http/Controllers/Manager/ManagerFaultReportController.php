@@ -13,7 +13,10 @@ class ManagerFaultReportController extends Controller
      */
     public function index()
     {
-        $reports = FaultReport::with(['user'])->get();
+        $reports = FaultReport::with(['user'])
+            ->where('validated', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('manager.reports', compact('reports'));
     }
 

@@ -54,7 +54,6 @@ class ReportsController extends Controller
         // Validate the request
         $validated = $request->validate([
             'issue_type' => 'required|string|max:255',
-            // 'block' => 'required|string|max:255',
             'description' => 'required|string',
         ]);
 
@@ -62,9 +61,8 @@ class ReportsController extends Controller
         $report = new FaultReport();
         $report->user_id = Auth::id();
         $report->category = $validated['issue_type'];
-        // $report->block = $validated['block'];
         $report->description = $validated['description'];
-        $report->status = 'pending'; // Default status
+        $report->status = 'pending'; 
         $report->save();
 
         return redirect()->route('assistant.reports')
@@ -90,9 +88,21 @@ class ReportsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, FaultReport $report)
     {
-        //
+        $user = Auth::user();
+        // Handle validation request
+        if ($request->has('validate_report')) {
+            $report->update([
+                'validated' => true,
+                'validated_at' => now(),
+                'validated_by' => $user->id
+            ]);
+            
+            return back()->with('success', 'Report validated successfully');
+        }
+
+        return back()->with('error', 'Invalid update request');
     }
 
     /**

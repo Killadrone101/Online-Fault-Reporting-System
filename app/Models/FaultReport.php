@@ -11,7 +11,16 @@ class FaultReport extends Model
     use HasFactory;
 
     protected $primaryKey = 'report_id';
-    protected $fillable = ['user_id', 'description', 'category', 'image', 'status'];
+    protected $fillable = [
+        'user_id', 
+        'description', 
+        'category', 
+        'image', 
+        'status',
+        'validated',
+        'validated_at',
+        'validated_by'
+    ];
 
     public function user()
     {
@@ -21,5 +30,10 @@ class FaultReport extends Model
     public function feedback()
     {
         return $this->hasOne(Feedback::class, 'report_id');
+    }
+
+    public function validator()
+    {
+        return $this->belongsTo(User::class, 'validated_by');
     }
 }
