@@ -67,7 +67,14 @@ class StudentFaultReportController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $report = FaultReport::findOrFail($id);
+
+        // Check if the authenticated user owns this report
+        if ($report->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('student.view-report', compact('report'));
     }
 
     /**

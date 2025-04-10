@@ -59,6 +59,11 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
+                                        <!-- View -->
+                                        <a href="{{ route('student.reports.show', $report->report_id) }}" class="text-blue-600 hover:text-blue-900 mx-2">
+                                            View
+                                        </a>
+                                        
                                         <!-- Remove -->
                                         <form method="POST" action="{{ route('student.reports.destroy', $report) }}" class="inline" x-on:submit.prevent="if(confirm('Are you sure?')) { $el.submit(); show = false }">
                                             @csrf
