@@ -15,7 +15,10 @@ class ManagerController extends Controller
      */
     public function dashboard() {
 
-        $reports = FaultReport::with(['user'])->get();
+        $reports = FaultReport::with(['user'])
+            ->where('validated', true)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
         // Report statistics
         $totalReports = FaultReport::count();
