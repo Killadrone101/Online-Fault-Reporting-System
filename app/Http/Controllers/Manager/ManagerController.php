@@ -21,7 +21,7 @@ class ManagerController extends Controller
             ->paginate(10);
 
         // Report statistics
-        $totalReports = FaultReport::count();
+        $totalReports = FaultReport::where('validated', true)->count();
         $pendingReports = FaultReport::where('status', 'pending')->count();
         $resolvedReports = FaultReport::where('status', 'resolved')->count();
         $recentReports = FaultReport::with('user')
