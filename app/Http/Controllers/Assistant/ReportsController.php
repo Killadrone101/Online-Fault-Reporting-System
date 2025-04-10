@@ -55,6 +55,7 @@ class ReportsController extends Controller
         $validated = $request->validate([
             'issue_type' => 'required|string|max:255',
             'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // 5MB max
         ]);
 
         // Create new fault report
@@ -63,6 +64,14 @@ class ReportsController extends Controller
         $report->category = $validated['issue_type'];
         $report->description = $validated['description'];
         $report->status = 'pending'; 
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('fault-images', 'public');
+            $report->image = $imagePath;
+        }
+
+        
         $report->save();
 
         return redirect()->route('assistant.reports')

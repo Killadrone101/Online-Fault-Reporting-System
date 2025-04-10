@@ -40,6 +40,7 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-3">No.</th>
                                     <th scope="col" class="px-6 py-3">Issue Type</th>
+                                    <th scope="col" class="px-6 py-3">Fault Image</th>
                                     <th scope="col" class="px-6 py-3">Department Assigned To</th>
                                     <th scope="col" class="px-6 py-3">Date Reported</th>
                                     <th scope="col" class="px-6 py-3">Status</th>
@@ -53,7 +54,18 @@
                                     <td class="px-6 py-4 font-medium text-gray-900">
                                         {{ $report->category ?? "N/A" }}
                                     </td>
-                                    <td class="px-6 py-4 text-gray-900">{{ $report->user->department->name ?? "N/A" }}</td>
+                                    <td class="px-6 py-4">
+                                        @if($report->image)
+                                            <a href="{{ Storage::url($report->image) }}" target="_blank">
+                                                <img src="{{ Storage::url($report->image) }}" 
+                                                     alt="Fault Image" 
+                                                     class="h-16 w-16 object-cover rounded-md border border-gray-200 shadow-sm hover:opacity-80 transition-opacity">
+                                            </a>
+                                        @else
+                                            <span class="text-gray-400 text-xs italic">No image</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-900">{{ $report->category ?? "N/A" }} {{ "Department" }}</td>
                                     <td class="px-6 py-4 text-gray-900">{{ $report->created_at->format('M d, Y H:i') ?? "N/A" }}</td>
                                     <td class="px-6 py-4 text-gray-900">
                                         <span class="px-2.5 py-1 text-xs font-medium rounded-full 
