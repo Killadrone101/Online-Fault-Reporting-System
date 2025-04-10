@@ -5,7 +5,11 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+            @if(Auth::user()->role === 'student')
+                {{ __("Your profile information is managed by the system administrator.") }}
+            @else
+                {{ __("Update your account's profile information and email address.") }}
+            @endif
         </p>
     </header>
 
@@ -19,12 +23,31 @@
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            @if(Auth::user()->role === 'student')
+                <x-text-input id="name" name="name" type="text" class="mt-1 block w-full bg-gray-100" :value="$user->name" readonly disabled />
+            @else
+                <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+                <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            @endif
         </div>
 
         @if(Auth::user()->role === 'student')
-            {{-- Students cannot update their email --}}
+            {{-- Students cannot update their details - display read-only fields --}}
+            <div>
+                <x-input-label for="email" :value="__('Email')" />
+                <x-text-input id="email" type="email" class="mt-1 block w-full bg-gray-100" :value="$user->email" readonly disabled />
+            </div>
+            <div>
+                <x-input-label for="student_id" :value="__('Student ID')" />
+                <x-text-input id="student_id" type="text" class="mt-1 block w-full bg-gray-100" :value="$user->student_id ?? 'Not specified'" readonly disabled />
+            </div>
+            <div>
+                <x-input-label for="residence" :value="__('Residence')" />
+                <x-text-input id="residence" type="text" class="mt-1 block w-full bg-gray-100" :value="$user->residence ?? 'Not specified'" readonly disabled />
+            </div>
+            <p class="text-sm text-gray-600 italic mt-4">
+                {{ __("Contact administration if you need to update your profile information.") }}
+            </p>
         @else
             <div>
                 <x-input-label for="email" :value="__('Email')" />
@@ -52,16 +75,18 @@
         @endif
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            @if(Auth::user()->role !== 'student')
+                <x-primary-button>{{ __('Save') }}</x-primary-button>
 
-            @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+                @if (session('status') === 'profile-updated')
+                    <p
+                        x-data="{ show: true }"
+                        x-show="show"
+                        x-transition
+                        x-init="setTimeout(() => show = false, 2000)"
+                        class="text-sm text-gray-600"
+                    >{{ __('Saved.') }}</p>
+                @endif
             @endif
         </div>
     </form>
