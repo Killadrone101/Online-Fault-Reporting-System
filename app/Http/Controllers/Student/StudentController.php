@@ -26,7 +26,7 @@ class StudentController extends Controller
         // Calculate the report counts
         $totalReports = $reports->count();
         $pendingReports = $reports->where('status', 'pending')->count();
-        $resolvedFaults = $reports->where('status', 'resolved')->count();
+        $resolvedFaults = $reports->where('status', 'solved')->count();
 
         return view('student.dashboard', compact(
             'reports',

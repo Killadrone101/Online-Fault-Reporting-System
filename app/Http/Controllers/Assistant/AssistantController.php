@@ -33,7 +33,7 @@ class AssistantController extends Controller
         // Calculate the report counts
         $totalReports = $reports->count();
         $pendingReports = $reports->where('status', 'pending')->count();
-        $resolvedReports = $reports->where('status', 'resolved')->count();
+        $resolvedReports = $reports->where('status', 'solved')->count();
 
         return view('assistant.dashboard', compact(
             'reports',
