@@ -13,21 +13,21 @@
                     <!-- Stats Cards - Fixed with w-full and responsive design -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 w-full">
                         <!-- Total Reports -->
-                        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm w-full">
-                            <h3 class="text-lg font-medium text-gray-700">Total Reports</h3>
-                            <p class="text-3xl font-bold text-gray-900">{{ $totalReports ?? 0 }}</p>
+                        <div class="bg-blue-600 text-white border border-gray-200 rounded-lg p-4 shadow-sm w-full">
+                            <h3 class="text-lg font-medium">Total Reports</h3>
+                            <p class="text-3xl font-bold text-white">{{ $totalReports ?? 0 }}</p>
                         </div>
                         
                         <!-- Pending Reports -->
-                        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm w-full">
-                            <h3 class="text-lg font-medium text-gray-700">Pending Reports</h3>
-                            <p class="text-3xl font-bold text-yellow-600">{{ $pendingReports ?? 0 }}</p>
+                        <div class="bg-indigo-600 border border-gray-200 rounded-lg p-4 shadow-sm w-full">
+                            <h3 class="text-lg font-medium text-white">Pending Reports</h3>
+                            <p class="text-3xl font-bold text-yellow-500">{{ $pendingReports ?? 0 }}</p>
                         </div>
                         
                         <!-- Resolved Faults -->
-                        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm w-full">
-                            <h3 class="text-lg font-medium text-gray-700">Resolved Faults</h3>
-                            <p class="text-3xl font-bold text-green-600">{{ $resolvedFaults ?? 0 }}</p>
+                        <div class="bg-purple-600 border-gray-200 rounded-lg p-4 shadow-sm w-full">
+                            <h3 class="text-lg font-medium text-white">Resolved Faults</h3>
+                            <p class="text-3xl font-bold text-green-500">{{ $resolvedFaults ?? 0 }}</p>
                         </div>
                     </div>
 
