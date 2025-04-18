@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Assistant;
 
 use App\Http\Controllers\Controller;
 use App\Models\FaultReport;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,17 +17,17 @@ class ReportsController extends Controller
     {
         // Get the currently authenticated user
         $user = Auth::user();
-        
+
         // Check if the user is an admin/assistant who can view all reports from a block
         if ($user->role === 'admin' || $user->role === 'assistant') {
             // Get reports only from users in the same residence block as the current user
             $reports = FaultReport::with(['user'])
-                ->whereHas('user', function($query) use ($user) {
+                ->whereHas('user', function ($query) use ($user) {
                     $query->where('residence', $user->residence);
                 })
                 ->orderBy('created_at', 'desc')
                 ->get();
-        } 
+        }
         // For regular users, show only their own reports
         else {
             $reports = FaultReport::with(['user'])
@@ -34,7 +35,7 @@ class ReportsController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         }
-        
+
         return view('assistant.reports', compact('reports'));
     }
 
@@ -63,7 +64,7 @@ class ReportsController extends Controller
         $report->user_id = Auth::id();
         $report->category = $validated['issue_type'];
         $report->description = $validated['description'];
-        $report->status = 'pending'; 
+        $report->status = 'pending';
 
         // Handle image upload
         if ($request->hasFile('image')) {
@@ -71,7 +72,7 @@ class ReportsController extends Controller
             $report->image = $imagePath;
         }
 
-        
+
         $report->save();
 
         return redirect()->route('assistant.reports')
@@ -107,11 +108,38 @@ class ReportsController extends Controller
                 'validated_at' => now(),
                 'validated_by' => $user->id
             ]);
-            
+
             return back()->with('success', 'Report validated successfully');
         }
 
         return back()->with('error', 'Invalid update request');
+    }
+
+    /**
+     * Validate a fault report and assign to appropriate department
+     */
+    public function validate(Request $request, FaultReport $report)
+    {
+        // Find the department based on the fault category
+        $department = Department::where('name', $report->category)->first();
+
+        // If no direct match, you might want to implement a mapping logic 
+        // or just use a default department
+        if (!$department) {
+            // Optional: handle case when department doesn't exist
+            // Could redirect with a message to manually assign
+            return back()->with('error', 'No matching department found for this fault category');
+        }
+
+        // Update report to validated status and assign department manager
+        $report->update([
+            'validated' => true,
+            'validator_id' => auth()->id(),
+            'department_id' => $department->department_id,
+            'status' => 'pending' // Ensures it's set to pending for the manager
+        ]);
+
+        return back()->with('success', 'Report validated and assigned to ' . $department->name . ' department');
     }
 
     /**

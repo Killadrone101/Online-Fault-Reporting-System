@@ -25,30 +25,34 @@
                                     <th scope="col" class="px-6 py-3">No.</th>
                                     <th scope="col" class="px-6 py-3">Department Name</th>
                                     <th scope="col" class="px-6 py-3">Department Manager</th>
-                                    <th scope="col" class="px-6 py-3">Pending Fault Reports</th>
+                                    <th scope="col" class="px-6 py-3">Users</th>
                                     <th scope="col" class="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($departments as $department)
+                                @foreach($departments as $department)
                                 <tr class="bg-white border-b hover:bg-gray-50">
                                     <td class="px-6 py-4 text-gray-900">{{ $loop->iteration }}</td>
                                     <td class="px-6 py-4 font-medium text-gray-900">
                                         {{ $department->name }}
                                     </td>
                                     <td class="px-6 py-4 font-medium text-gray-900">
-                                        {{ $department->user->name }}
+                                        {{ $department->manager ? $department->manager->name : 'No Manager' }}
                                     </td>
-                                    <td class="px-6 py-4 text-gray-900">{{ $department->user->faultreport->status }}</td>
+                                    <td class="px-6 py-4 text-gray-900">
+                                        @foreach($department->users as $user)
+                                            {{ $user->name }}<br>
+                                        @endforeach
+                                    </td>
                                     <td class="px-6 py-4">
                                         <!-- View Button -->
-                                        <a href="{{ route('admin.departments.show', $department->id) }}" 
+                                        <a href="{{ route('admin.departments.show', $department) }}" 
                                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                             View
                                          </a>
 
                                         <!-- Remove Button -->
-                                        <form method="POST" action="{{ route('admin.departments.destroy', $department->id) }}" class="inline" x-on:submit.prevent="if(confirm('Are you sure?')) { $el.submit(); show = false }">
+                                        <form method="POST" action="{{ route('admin.departments.destroy', $department) }}" class="inline" x-on:submit.prevent="if(confirm('Are you sure?')) { $el.submit(); show = false }">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-900 mx-2">
@@ -57,13 +61,7 @@
                                         </form>
                                     </td>
                                 </tr>
-                                @empty
-                                <tr class="bg-white border-b">
-                                    <td colspan="6" class="px-6 py-4 text-center text-gray-900">
-                                        No departments Available
-                                    </td>
-                                </tr>
-                                @endforelse
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

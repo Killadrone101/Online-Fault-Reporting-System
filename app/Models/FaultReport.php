@@ -12,10 +12,10 @@ class FaultReport extends Model
 
     protected $primaryKey = 'report_id';
     protected $fillable = [
-        'user_id', 
-        'description', 
-        'category', 
-        'image', 
+        'user_id',
+        'description',
+        'category',
+        'image',
         'status',
         'validated',
         'validated_at',
@@ -35,5 +35,13 @@ class FaultReport extends Model
     public function validator()
     {
         return $this->belongsTo(User::class, 'validated_by');
+    }
+
+    /**
+     * Get the department this fault report is assigned to
+     */
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'department_id');
     }
 }

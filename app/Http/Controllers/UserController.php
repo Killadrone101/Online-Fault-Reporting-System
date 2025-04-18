@@ -8,6 +8,7 @@ use App\Models\Feedback;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -18,7 +19,7 @@ class UserController extends Controller
     {
         // User statistics
         $totalUsers = User::count();
-        
+
         // Report statistics
         $totalReports = FaultReport::count();
         $pendingReports = FaultReport::where('status', 'pending')->count();
@@ -27,18 +28,18 @@ class UserController extends Controller
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
-        
+
         // Department statistics
         $totalDepartments = Department::count();
         $departments = Department::with(['staff'])
             ->withCount([
-                'staff as staff_count' => function($query) {
+                'staff as staff_count' => function ($query) {
                     $query->select(DB::raw('count(*)'));
                 },
                 'reports as reports_count'
             ])
             ->get();
-        
+
         // Feedback statistics
         $totalFeedback = Feedback::count();
         $validatedFeedback = Feedback::where('student_validation', true)->count();
@@ -59,7 +60,7 @@ class UserController extends Controller
             'recentFeedback'
         ));
     }
-    
+
     /**
      * Display a listing of the resource.
      */
@@ -73,38 +74,44 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new user.
      */
     public function create()
     {
-        //
-        $users = User::all();
-        return view('admin.users-create', compact('users'));
+        $departments = Department::all();
+        return view('admin.users-create', compact('departments'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created user in storage.
      */
     public function store(Request $request)
     {
-        //
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:4|confirmed',
-            'role' => 'required|in:student,assistant,manager,admin',
-            'block' => 'required|string|max:255'
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'block' => 'required|string',
+            'role' => 'required|string|in:student,assistant,manager,admin',
+            'department' => 'required_if:role,manager|nullable|exists:departments,department_id',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-            'role' => $validated['role'],
+            'password' => Hash::make($validated['password']),
             'residence' => $validated['block'],
+            'role' => $validated['role'],
         ]);
 
-        return redirect()->route('admin.users')->with('success', 'User created successfully.');
+        // If the user is a manager and a department is selected, assign them to it
+        if ($validated['role'] === 'manager' && isset($validated['department'])) {
+            $department = Department::findOrFail($validated['department']);
+            $department->staff_id = $user->id;
+            $department->save();
+        }
+
+        return redirect()->route('admin.users')->with('success', 'User created successfully');
     }
 
     /**

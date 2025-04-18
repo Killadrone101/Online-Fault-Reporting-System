@@ -69,13 +69,27 @@
                         <!-- Role -->
                         <div>
                             <x-input-label for="role" value="{{ __('Role') }}" class="text-gray-700" />
-                            <select name="role" id="role" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 text-gray-900" required>
+                            <select name="role" id="role" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 text-gray-900" required onchange="toggleDepartmentField()">
                                 <option value="student">Student</option>
                                 <option value="assistant">RA</option>
                                 <option value="manager">Department Manager</option>
                                 <option value="admin">Admin</option>
                             </select>
                             @error('role')
+                                <span class="text-red-600 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <!-- Department (only shown for managers) -->
+                        <div id="department-field" style="display: none;">
+                            <x-input-label for="department" value="{{ __('Department') }}" class="text-gray-700" />
+                            <select name="department" id="department" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 text-gray-900">
+                                <option value="">Select Department</option>
+                                @foreach($departments as $department)
+                                    <option value="{{ $department->department_id }}">{{ $department->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('department')
                                 <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
@@ -87,6 +101,24 @@
                         </x-button>
                     </div>
                 </form>
+                
+                <script>
+                    function toggleDepartmentField() {
+                        const roleSelect = document.getElementById('role');
+                        const departmentField = document.getElementById('department-field');
+                        
+                        if (roleSelect.value === 'manager') {
+                            departmentField.style.display = 'block';
+                            document.getElementById('department').setAttribute('required', 'required');
+                        } else {
+                            departmentField.style.display = 'none';
+                            document.getElementById('department').removeAttribute('required');
+                        }
+                    }
+                    
+                    // Initialize on page load
+                    document.addEventListener('DOMContentLoaded', toggleDepartmentField);
+                </script>
             </div>
         </div>
     </div>

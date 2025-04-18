@@ -7,32 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
-    //
     use HasFactory;
 
     protected $primaryKey = 'department_id';
-    protected $fillable = ['name', 'staff_id'];
+    protected $fillable = [
+        'name',
+        'staff_id',
+        'category_type',
+        'description',
+    ];
 
-    public function staff()
+    // For the manager (staff) of the department
+    public function manager()
     {
         return $this->belongsTo(User::class, 'staff_id');
     }
 
+    // For all users assigned to this department
     public function users()
     {
-        return $this->hasMany(User::class, 'department_id');
+        return $this->hasMany(User::class, 'department_id', 'department_id');
     }
-
-    public function reports()
-    {
-        return $this->hasManyThrough(
-            FaultReport::class,
-            User::class,
-            'staff_id',  // Foreign key on users table (since departments.staff_id = users.id)
-            'user_id',   // Foreign key on fault_reports table
-            'staff_id',  // Local key on departments table
-            'id'        // Local key on users table
-        );
-    }
-
 }
