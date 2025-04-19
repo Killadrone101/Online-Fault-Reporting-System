@@ -28,4 +28,10 @@ class Department extends Model
     {
         return $this->hasMany(User::class, 'department_id', 'department_id');
     }
+
+    // For fault reports assigned to this department
+    public function reports()
+    {
+        return $this->hasMany(FaultReport::class, 'user_id', 'staff_id');
+    }
 }

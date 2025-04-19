@@ -168,9 +168,9 @@
                                         <div class="font-medium text-gray-900">{{ $department->name }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($department->staff)
-                                        <div class="text-sm text-gray-900">{{ $department->staff->name }}</div>
-                                        <div class="text-sm text-gray-500">{{ $department->staff->email }}</div>
+                                        @if($department->manager)
+                                        <div class="text-sm text-gray-900">{{ $department->manager->name }}</div>
+                                        {{-- <div class="text-sm text-gray-500">{{ $department->staff->email }}</div> --}}
                                         @else
                                         <span class="text-sm text-gray-500">Not assigned</span>
                                         @endif

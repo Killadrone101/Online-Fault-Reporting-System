@@ -31,9 +31,9 @@ class UserController extends Controller
 
         // Department statistics
         $totalDepartments = Department::count();
-        $departments = Department::with(['staff'])
+        $departments = Department::with(['manager'])
             ->withCount([
-                'staff as staff_count' => function ($query) {
+                'users as staff_count' => function ($query) {
                     $query->select(DB::raw('count(*)'));
                 },
                 'reports as reports_count'
