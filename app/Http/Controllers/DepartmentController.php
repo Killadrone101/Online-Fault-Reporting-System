@@ -60,7 +60,7 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        $departments = Department::with(['user'])->findOrFail($department->id);
+        $departments = Department::with(['users'])->findOrFail($department->department_id);
         return view('admin.view-department', compact('departments'));
     }
 
@@ -85,6 +85,7 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        //
+        $department->delete();
+        return back()->with('success', 'Department deleted successfully.');
     }
 }
