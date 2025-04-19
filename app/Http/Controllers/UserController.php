@@ -61,14 +61,18 @@ class UserController extends Controller
         ));
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $users = User::orderBy('created_at', 'desc')
-            ->paginate(10);
+        $search = $request->input('search');
+        
+        $users = User::when($search, function ($query, $search) {
+            return $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('residence', 'like', "%{$search}%")
+                        ->orWhere('role', 'like', "%{$search}%");
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
 
         return view('admin.users', compact('users'));
     }
@@ -93,7 +97,6 @@ class UserController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'block' => 'required|string',
             'role' => 'required|string|in:student,assistant,manager,admin',
-            // 'department' => 'required_if:role,manager|nullable|exists:departments,department_id',
         ]);
 
         $user = User::create([
@@ -103,13 +106,6 @@ class UserController extends Controller
             'residence' => $validated['block'],
             'role' => $validated['role'],
         ]);
-
-        // If the user is a manager and a department is selected, assign them to it
-        // if ($validated['role'] === 'manager' && isset($validated['department'])) {
-        //     $department = Department::findOrFail($validated['department']);
-        //     $department->staff_id = $user->id;
-        //     $department->save();
-        // }
 
         return redirect()->route('admin.users')->with('success', 'User created successfully');
     }

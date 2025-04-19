@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900">
                     <!-- Search Bar -->
                     <div class="flex justify-between mb-4 ">
-                        <a href="{{ route('admin.departments.create') }}" class="bg-green-500 hover:bg-green-700 text-dark font-bold py-2 px-4 rounded">
+                        <a href="{{ route('admin.departments.create') }}" class="bg-red-800 hover:bg-red-900 text-white font-bold py-2 px-4 rounded">
                             Add department
                         </a>
                         <input type="text" id="search" placeholder="Search departments..." class="rounded-lg px-4 py-2 w-64 border border-gray-300 text-gray-900">
