@@ -20,7 +20,7 @@ class Department extends Model
     // For the manager (staff) of the department
     public function manager()
     {
-        return $this->belongsTo(User::class, 'staff_id');
+        return $this->belongsTo(User::class, 'staff_id')->withDefault();
     }
 
     // For all users assigned to this department
@@ -32,6 +32,12 @@ class Department extends Model
     // For fault reports assigned to this department
     public function reports()
     {
-        return $this->hasMany(FaultReport::class, 'user_id', 'staff_id');
+        return $this->hasMany(FaultReport::class, 'department_id', 'department_id');
+    }
+
+    // Add relationship to workers
+    public function workers()
+    {
+        return $this->hasMany(Worker::class, 'department_id', 'department_id');
     }
 }

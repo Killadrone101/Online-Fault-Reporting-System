@@ -25,7 +25,6 @@
                                     <th scope="col" class="px-6 py-3">No.</th>
                                     <th scope="col" class="px-6 py-3">Department Name</th>
                                     <th scope="col" class="px-6 py-3">Department Manager</th>
-                                    <th scope="col" class="px-6 py-3">Users</th>
                                     <th scope="col" class="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
@@ -38,11 +37,6 @@
                                     </td>
                                     <td class="px-6 py-4 font-medium text-gray-900">
                                         {{ $department->manager ? $department->manager->name : 'No Manager' }}
-                                    </td>
-                                    <td class="px-6 py-4 text-gray-900">
-                                        @foreach($department->users as $user)
-                                            {{ $user->name }}<br>
-                                        @endforeach
                                     </td>
                                     <td class="px-6 py-4">
                                         <!-- View Button -->
@@ -65,13 +59,6 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <!-- Pagination -->
-                    {{-- @if($departments->hasPages())
-                    <div class="mt-4">
-                        {{ $departments->links() }}
-                    </div>
-                    @endif --}}
                 </div>
             </div>
         </div>

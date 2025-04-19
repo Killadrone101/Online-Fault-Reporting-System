@@ -34,7 +34,7 @@ class DepartmentController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'manager' => 'required|exists:users,id',
+            'manager' => 'nullable|exists:users,id', // Change to nullable
             'category_type' => 'required|string',
             'description' => 'nullable|string',
         ]);
@@ -42,13 +42,15 @@ class DepartmentController extends Controller
         // Create the department with all required fields
         $department = Department::create([
             'name' => $validated['name'],
-            'staff_id' => $validated['manager'],
+            'staff_id' => $validated['manager'] ?? null, // Make it optional
             'category_type' => $validated['category_type'],
             'description' => $validated['description'] ?? null,
         ]);
 
-        // Update the manager's department_id
-        User::where('id', $validated['manager'])->update(['department_id' => $department->id]);
+        // Only update the manager's department_id if a manager was selected
+        if (isset($validated['manager'])) {
+            User::where('id', $validated['manager'])->update(['department_id' => $department->department_id]);
+        }
 
         return redirect()->route('admin.departments')->with('success', 'Department created successfully');
     }
@@ -58,8 +60,8 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        // $department = Department::with(['user'])->findOrFail($id);
-        return view('admin.view-department', compact('department'));
+        $departments = Department::with(['user'])->findOrFail($department->id);
+        return view('admin.view-department', compact('departments'));
     }
 
     /**

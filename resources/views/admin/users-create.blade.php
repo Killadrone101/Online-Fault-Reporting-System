@@ -60,6 +60,7 @@
                                 <option value="Block 479">Block 479</option>
                                 <option value="Block 480">Block 480</option>
                                 <option value="Admin Block">Admin Block</option>
+                                <option value="Maintenance Block">Maintenance Block</option>
                             </select>
                             @error('block')
                                 <span class="text-red-600 text-sm">{{ $message }}</span>
@@ -79,20 +80,6 @@
                                 <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
-
-                        <!-- Department (only shown for managers) -->
-                        <div id="department-field" style="display: none;">
-                            <x-input-label for="department" value="{{ __('Department') }}" class="text-gray-700" />
-                            <select name="department" id="department" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 text-gray-900">
-                                <option value="">Select Department</option>
-                                @foreach($departments as $department)
-                                    <option value="{{ $department->department_id }}">{{ $department->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('department')
-                                <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
                     </div>
                 
                     <div class="flex justify-end mt-6">
@@ -101,24 +88,6 @@
                         </x-button>
                     </div>
                 </form>
-                
-                <script>
-                    function toggleDepartmentField() {
-                        const roleSelect = document.getElementById('role');
-                        const departmentField = document.getElementById('department-field');
-                        
-                        if (roleSelect.value === 'manager') {
-                            departmentField.style.display = 'block';
-                            document.getElementById('department').setAttribute('required', 'required');
-                        } else {
-                            departmentField.style.display = 'none';
-                            document.getElementById('department').removeAttribute('required');
-                        }
-                    }
-                    
-                    // Initialize on page load
-                    document.addEventListener('DOMContentLoaded', toggleDepartmentField);
-                </script>
             </div>
         </div>
     </div>

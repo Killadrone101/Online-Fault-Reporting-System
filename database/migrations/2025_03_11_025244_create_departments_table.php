@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->id('department_id'); // Creates `department_id` as primary key
             $table->string('name');
-            $table->foreignId('staff_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('staff_id')->constrained('users')->onDelete('cascade')->nullable();
             $table->timestamps();
         });
     }

@@ -36,7 +36,7 @@ class UserController extends Controller
                 'users as staff_count' => function ($query) {
                     $query->select(DB::raw('count(*)'));
                 },
-                'reports as reports_count'
+                // 'reports as reports_count'
             ])
             ->get();
 
@@ -93,7 +93,7 @@ class UserController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'block' => 'required|string',
             'role' => 'required|string|in:student,assistant,manager,admin',
-            'department' => 'required_if:role,manager|nullable|exists:departments,department_id',
+            // 'department' => 'required_if:role,manager|nullable|exists:departments,department_id',
         ]);
 
         $user = User::create([
@@ -105,11 +105,11 @@ class UserController extends Controller
         ]);
 
         // If the user is a manager and a department is selected, assign them to it
-        if ($validated['role'] === 'manager' && isset($validated['department'])) {
-            $department = Department::findOrFail($validated['department']);
-            $department->staff_id = $user->id;
-            $department->save();
-        }
+        // if ($validated['role'] === 'manager' && isset($validated['department'])) {
+        //     $department = Department::findOrFail($validated['department']);
+        //     $department->staff_id = $user->id;
+        //     $department->save();
+        // }
 
         return redirect()->route('admin.users')->with('success', 'User created successfully');
     }
