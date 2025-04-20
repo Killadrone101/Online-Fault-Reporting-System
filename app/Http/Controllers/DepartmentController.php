@@ -11,10 +11,29 @@ class DepartmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    // public function index()
+    // {
+    //     //
+    //     $departments = Department::with(['users'])->get();
+    //     return view('admin.departments', compact('departments'));
+    // }
+
+    public function index(Request $request)
     {
-        //
-        $departments = Department::with(['users'])->get();
+        $search = $request->input('search');
+        
+        $departments = Department::with('manager')
+            ->when($search, function ($query, $search) {
+                return $query->where(function($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                    ->orWhereHas('manager', function($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+                });
+            })
+            ->orderBy('name')
+            ->paginate(10);
+
         return view('admin.departments', compact('departments'));
     }
 
