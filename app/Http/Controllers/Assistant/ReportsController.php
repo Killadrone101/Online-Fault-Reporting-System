@@ -26,7 +26,7 @@ class ReportsController extends Controller
                     $query->where('residence', $user->residence);
                 })
                 ->orderBy('created_at', 'desc')
-                ->get();
+                ->paginate(10);
         }
         // For regular users, show only their own reports
         else {

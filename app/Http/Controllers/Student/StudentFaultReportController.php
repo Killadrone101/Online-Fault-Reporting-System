@@ -19,7 +19,7 @@ class StudentFaultReportController extends Controller
 
         $reports = FaultReport::with(['user'])
             ->where('user_id', $user->id)
-            ->get();
+            ->paginate(10);
         return view('student.reports', compact('reports'));
     }
 
