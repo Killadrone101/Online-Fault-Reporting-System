@@ -67,7 +67,7 @@
                                             {{ $report->validated ? 'Validated' : ($report->status ?? "Pending") }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-8 flex items-center space-x-2">
                                         <!-- Validate report -->
                                         @if(!$report->validated)
                                             <form method="POST" action="{{ route('assistant.reports.update', $report) }}" class="inline">
@@ -78,8 +78,8 @@
                                                     Validate
                                                 </button>
                                             </form>
-                                        @else
-                                            <span class="text-green-500">Validated</span>
+                                        {{-- @else
+                                            <span class="text-green-500">Validated</span> --}}
                                         @endif
                                         <a href="{{ route('assistant.reports.show', $report->report_id) }}" class="text-blue-600 hover:text-blue-800 transition duration-150" title="View">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
