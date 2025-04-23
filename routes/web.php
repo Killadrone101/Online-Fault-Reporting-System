@@ -134,7 +134,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->middleware('role:assistant');
 
         // Reports
-        Route::get('/reports', [ ReportsController::class, 'index'])
+        Route::get('/reports', [ReportsController::class, 'index'])
             ->name('assistant.reports')
             ->middleware('role:assistant');
         Route::resource('reports', ReportsController::class)->except(['index'])
@@ -148,7 +148,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ]);
 
         // Feedbacks
-        Route::get('/feedbacks', [ AssistantFeedbackController::class, 'index'])
+        Route::get('/feedbacks', [AssistantFeedbackController::class, 'index'])
             ->name('assistant.feedbacks')
             ->middleware('role:assistant');
         Route::resource('feedbacks', AssistantFeedbackController::class)->except(['index'])
@@ -160,13 +160,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'update' => 'feedbacks.reports.update',
                 'destroy' => 'feedbacks.reports.destroy',
             ]);
-
-    });
-
-    Route::middleware(['auth', 'role:assistant'])->group(function () {
         Route::get('/assistant/reports/{report}', [ReportsController::class, 'show'])->name('assistant.reports.show');
         Route::post('/assistant/reports/{report}/validate', [ReportsController::class, 'validate'])->name('assistant.reports.validate');
+    
     });
+
 
     //=======================================================================================
     // SHARED ROUTES
