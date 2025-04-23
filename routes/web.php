@@ -163,6 +163,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     });
 
+    Route::middleware(['auth', 'role:assistant'])->group(function () {
+        Route::get('/assistant/reports/{report}', [ReportsController::class, 'show'])->name('assistant.reports.show');
+        Route::post('/assistant/reports/{report}/validate', [ReportsController::class, 'validate'])->name('assistant.reports.validate');
+    });
+
     //=======================================================================================
     // SHARED ROUTES
     //=======================================================================================

@@ -82,9 +82,15 @@ class ReportsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(FaultReport $report)
     {
-        //
+        // Ensure the assistant can only view reports from their residence block
+        $user = Auth::user();
+        if ($user->role === 'assistant' && $report->user->residence !== $user->residence) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('assistant.view-report', compact('report'));
     }
 
     /**
@@ -120,26 +126,13 @@ class ReportsController extends Controller
      */
     public function validate(Request $request, FaultReport $report)
     {
-        // Find the department based on the fault category
-        $department = Department::where('name', $report->category)->first();
-
-        // If no direct match, you might want to implement a mapping logic 
-        // or just use a default department
-        if (!$department) {
-            // Optional: handle case when department doesn't exist
-            // Could redirect with a message to manually assign
-            return back()->with('error', 'No matching department found for this fault category');
-        }
-
-        // Update report to validated status and assign department manager
         $report->update([
             'validated' => true,
-            'validator_id' => auth()->id(),
-            'department_id' => $department->department_id,
-            'status' => 'pending' // Ensures it's set to pending for the manager
+            'validated_at' => now(),
+            'validated_by' => Auth::id(),
         ]);
 
-        return back()->with('success', 'Report validated and assigned to ' . $department->name . ' department');
+        return redirect()->route('assistant.reports')->with('success', 'Report validated successfully.');
     }
 
     /**

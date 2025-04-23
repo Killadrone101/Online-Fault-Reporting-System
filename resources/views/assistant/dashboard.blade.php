@@ -33,7 +33,7 @@
 
                     <h1 class="font-semibold text-xl text-gray-800 leading-tight mb-4">Recent Fault Reports</h1>
 
-                    <!-- Applications Table -->
+                    <!-- Reports Table -->
                     <div class="overflow-x-auto shadow-md sm:rounded-lg">
                         <table class="w-full text-sm text-left text-gray-700">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -84,6 +84,12 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
+                                        <a href="{{ route('assistant.reports.show', $report->report_id) }}" class="text-blue-600 hover:text-blue-800 transition duration-150" title="View">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.522 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7s-8.268-2.943-9.542-7z"></path>
+                                            </svg>
+                                        </a>
                                         <form method="POST" action="{{ route('student.reports.destroy', $report) }}" class="inline" x-on:submit.prevent="if(confirm('Are you sure?')) { $el.submit(); show = false }">
                                             @csrf
                                             @method('DELETE')
