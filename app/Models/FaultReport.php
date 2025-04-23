@@ -15,6 +15,7 @@ class FaultReport extends Model
         'user_id',
         'description',
         'category',
+        'room_number',
         'image',
         'status',
         'validated',

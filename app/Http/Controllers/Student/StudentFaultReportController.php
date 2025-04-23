@@ -39,6 +39,7 @@ class StudentFaultReportController extends Controller
         // Validate the request
         $validated = $request->validate([
             'issue_type' => 'required|string|max:255',
+            'room_number' => 'required|string|max:15',
             'description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // 5MB max
         ]);

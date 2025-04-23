@@ -50,6 +50,14 @@
                             @enderror
                         </div>
 
+                        <div>
+                            <x-input-label for="room_number" value="{{ __('Room Number') }}" />
+                            <input type="text" id="room_number" name="room_number" class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                            @error('room_number')
+                                <span class="text-red-600 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
                         <!-- Comments -->
                         <div class="md:col-span-2">
                             <x-input-label for="description" value="{{ __('Description') }}" />
