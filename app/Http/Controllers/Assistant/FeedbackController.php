@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Assistant;
 
 use App\Http\Controllers\Controller;
+use App\Models\FaultReport;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,26 +13,40 @@ class FeedbackController extends Controller
     public function index()
     {
         $feedbacks = Feedback::with('user')->latest()->get();
-        return view('feedbacks.index', compact('feedbacks'));
+        return view('assistant.feedbacks', compact('feedbacks'));
     }
 
     public function create()
     {
-        return view('feedbacks.create');
+        return view('assistant.feedbacks.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'report_id' => 'required|exists:fault_reports,report_id',
             'comments' => 'required|string|max:1000',
+            'student_validation' => 'nullable|boolean'
         ]);
+
+        // Check if the report belongs to the student
+        $report = FaultReport::where('report_id', $request->report_id)
+                    ->where('user_id', Auth::id())
+                    ->where('status', 'solved')
+                    ->firstOrFail();
+
+        // Check if feedback already exists
+        if ($report->feedback) {
+            return redirect()->back()->with('error', 'You have already submitted feedback for this report.');
+        }
 
         Feedback::create([
-            'user_id' => Auth::id(),
+            'report_id' => $request->report_id,
             'comments' => $request->comments,
+            'student_validation' => $request->has('student_validation')
         ]);
 
-        return redirect()->route('feedbacks.index')->with('success', 'Feedback submitted successfully.');
+        return redirect()->back()->with('success', 'Thank you for your feedback!');
     }
 
     /**
