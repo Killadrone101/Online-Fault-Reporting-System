@@ -68,6 +68,51 @@
                     </div>
                     @endif
 
+                    <!-- Feedback Section -->
+                    @if($report->status === 'solved')
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-500 mb-2">Your Feedback</h4>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            @if($report->feedback)
+                                <div class="mb-4">
+                                    <p class="font-medium">Your Comments:</p>
+                                    <p class="mt-1">{{ $report->feedback->comments }}</p>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="font-medium mr-2">Resolution Confirmed:</span>
+                                    @if($report->feedback->student_validation)
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-green-400" fill="currentColor" viewBox="0 0 8 8">
+                                                <circle cx="4" cy="4" r="3" />
+                                            </svg>
+                                            Yes
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-red-400" fill="currentColor" viewBox="0 0 8 8">
+                                                <circle cx="4" cy="4" r="3" />
+                                            </svg>
+                                            No
+                                        </span>
+                                    @endif
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2">Submitted on {{ $report->feedback->created_at->format('M d, Y h:i A') }}</p>
+                            @else
+                                <p class="text-gray-500 mb-4">You haven't provided feedback for this resolved report yet.</p>
+                                <button 
+                                    @click="window.location.href='{{ route('student.reports') }}?feedback=' + {{ $report->report_id }}"
+                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                                >
+                                    <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                                    </svg>
+                                    Provide Feedback
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+
                     <!-- Progress Timeline (if needed) -->
                     <div class="mb-6">
                         <h4 class="font-medium text-gray-500 mb-2">Status Updates</h4>

@@ -3,32 +3,35 @@
 namespace App\Http\Controllers\Assistant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Feedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FeedbackController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $feedbacks = Feedback::with('user')->latest()->get();
+        return view('feedbacks.index', compact('feedbacks'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('feedbacks.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'comments' => 'required|string|max:1000',
+        ]);
+
+        Feedback::create([
+            'user_id' => Auth::id(),
+            'comments' => $request->comments,
+        ]);
+
+        return redirect()->route('feedbacks.index')->with('success', 'Feedback submitted successfully.');
     }
 
     /**

@@ -13,6 +13,7 @@ use App\Http\Controllers\Student\StudentFaultReportController;
 use App\Http\Controllers\Assistant\AssistantController;
 use App\Http\Controllers\Assistant\FeedbackController as AssistantFeedbackController;
 use App\Http\Controllers\Assistant\ReportsController;
+use App\Http\Controllers\Student\StudentFeedbackController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
@@ -58,6 +59,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'update' => 'admin.departments.update',
                 'destroy' => 'admin.departments.destroy',
             ]);
+
+        // Feedbacks
+        Route::get('/feedbacks', [FeedbackController::class, 'index'])
+        ->name('assistant.feedbacks')
+        ->middleware('role:admin');
+        Route::resource('feedbacks', FeedbackController::class)->except(['index'])
+        ->names([
+            'create' => 'feedbacks.reports.create',
+            'store' => 'feedbacks.reports.store',
+            'show' => 'feedbacks.reports.show',
+            'edit' => 'feedbacks.reports.edit',
+            'update' => 'feedbacks.reports.update',
+            'destroy' => 'feedbacks.reports.destroy',
+        ]);
     });
 
     //=======================================================================================
@@ -121,6 +136,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'edit' => 'student.reports.edit',
                 'update' => 'student.reports.update',
                 'destroy' => 'student.reports.destroy',
+            ]);
+
+            // Feedbacks
+            Route::get('/feedbacks', [StudentFeedbackController::class, 'index'])
+            ->name('assistant.feedbacks')
+            ->middleware('role:student');
+            Route::resource('feedbacks', StudentFeedbackController::class)->except(['index'])
+            ->names([
+                'create' => 'student.feedbacks.create',
+                'store' => 'student.feedbacks.store',
+                'show' => 'student.feedbacks.show',
+                'edit' => 'student.feedbacks.edit',
+                'update' => 'student.feedbacks.update',
+                'destroy' => 'student.feedbacks.destroy',
             ]);
     });
 
