@@ -62,16 +62,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Feedbacks
         Route::get('/feedbacks', [FeedbackController::class, 'index'])
-        ->name('assistant.feedbacks')
+        ->name('admin.feedbacks')
         ->middleware('role:admin');
         Route::resource('feedbacks', FeedbackController::class)->except(['index'])
         ->names([
-            'create' => 'feedbacks.reports.create',
-            'store' => 'feedbacks.reports.store',
-            'show' => 'feedbacks.reports.show',
-            'edit' => 'feedbacks.reports.edit',
-            'update' => 'feedbacks.reports.update',
-            'destroy' => 'feedbacks.reports.destroy',
+            'create' => 'admin.feedbacks.create',
+            'store' => 'admin.feedbacks.store',
+            'show' => 'admin.feedbacks.show',
+            'edit' => 'admin.feedbacks.edit',
+            'update' => 'admin.feedbacks.update',
+            'destroy' => 'admin.feedbacks.destroy',
         ]);
     });
 
@@ -140,7 +140,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             // Feedbacks
             Route::get('/feedbacks', [StudentFeedbackController::class, 'index'])
-            ->name('assistant.feedbacks')
+            ->name('student.feedbacks')
             ->middleware('role:student');
             Route::resource('feedbacks', StudentFeedbackController::class)->except(['index'])
             ->names([
