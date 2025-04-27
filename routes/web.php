@@ -17,7 +17,7 @@ use App\Http\Controllers\Student\StudentFeedbackController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('welcome'); // Updated to point to the welcome view
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
