@@ -21,5 +21,9 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
             'role' => 'admin'
         ]);
+
+        $this->call([
+            StudentSeeder::class,
+        ]);
     }
 }
