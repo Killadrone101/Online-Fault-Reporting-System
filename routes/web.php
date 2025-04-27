@@ -15,6 +15,7 @@ use App\Http\Controllers\Assistant\FeedbackController as AssistantFeedbackContro
 use App\Http\Controllers\Assistant\ReportsController;
 use App\Http\Controllers\Student\StudentFeedbackController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\ImportController;
 
 Route::get('/', function () {
     return view('welcome'); // Updated to point to the welcome view
@@ -62,17 +63,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Feedbacks
         Route::get('/feedbacks', [FeedbackController::class, 'index'])
-        ->name('admin.feedbacks')
-        ->middleware('role:admin');
+            ->name('admin.feedbacks')
+            ->middleware('role:admin');
         Route::resource('feedbacks', FeedbackController::class)->except(['index'])
-        ->names([
-            'create' => 'admin.feedbacks.create',
-            'store' => 'admin.feedbacks.store',
-            'show' => 'admin.feedbacks.show',
-            'edit' => 'admin.feedbacks.edit',
-            'update' => 'admin.feedbacks.update',
-            'destroy' => 'admin.feedbacks.destroy',
-        ]);
+            ->names([
+                'create' => 'admin.feedbacks.create',
+                'store' => 'admin.feedbacks.store',
+                'show' => 'admin.feedbacks.show',
+                'edit' => 'admin.feedbacks.edit',
+                'update' => 'admin.feedbacks.update',
+                'destroy' => 'admin.feedbacks.destroy',
+            ]);
     });
 
     //=======================================================================================
@@ -138,11 +139,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'destroy' => 'student.reports.destroy',
             ]);
 
-            // Feedbacks
-            Route::get('/feedbacks', [StudentFeedbackController::class, 'index'])
+        // Feedbacks
+        Route::get('/feedbacks', [StudentFeedbackController::class, 'index'])
             ->name('student.feedbacks')
             ->middleware('role:student');
-            Route::resource('feedbacks', StudentFeedbackController::class)->except(['index'])
+        Route::resource('feedbacks', StudentFeedbackController::class)->except(['index'])
             ->names([
                 'create' => 'student.feedbacks.create',
                 'store' => 'student.feedbacks.store',
@@ -191,9 +192,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ]);
         Route::get('/assistant/reports/{report}', [ReportsController::class, 'show'])->name('assistant.reports.show');
         Route::post('/assistant/reports/{report}/validate', [ReportsController::class, 'validate'])->name('assistant.reports.validate');
-    
     });
 
+    Route::post('/admin/import-students', [ImportController::class, 'importStudents'])->name('admin.import.students');
 
     //=======================================================================================
     // SHARED ROUTES

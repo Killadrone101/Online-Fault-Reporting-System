@@ -25,6 +25,17 @@
                     </svg>
                     <span>Add User</span>
                 </a>
+                <!-- Import Students Button -->
+                <button 
+                    type="button" 
+                    class="flex items-center space-x-1 bg-gradient-to-r from-red-700 to-red-800 hover:from-red-800 hover:to-red-900 text-white font-semibold py-2 px-4 rounded-full shadow-md hover:shadow-lg transition duration-200"
+                    onclick="document.getElementById('importModal').classList.remove('hidden')"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    <span>Import Students</span>
+                </button>
             </div>
         </div>
     </x-slot>
@@ -134,6 +145,57 @@
             </div>
         </div>
     </div>
+
+    <!-- Import Modal -->
+<div 
+    id="importModal" 
+    class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50"
+>
+    <div class="bg-white rounded-lg shadow-lg w-1/3">
+        <div class="flex justify-between items-center border-b border-gray-200 px-6 py-4">
+            <h3 class="text-lg font-semibold text-gray-800">Import Students</h3>
+            <button 
+                class="text-gray-400 hover:text-gray-600 transition duration-150"
+                onclick="document.getElementById('importModal').classList.add('hidden')"
+            >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="p-6">
+            <form method="POST" action="{{ route('admin.import.students') }}" enctype="multipart/form-data">
+                @csrf
+                <div class="mb-4">
+                    <label for="students_file" class="block text-sm font-medium text-gray-700">Upload SQL File</label>
+                    <input 
+                        type="file" 
+                        name="students_file" 
+                        id="students_file" 
+                        accept=".sql" 
+                        class="mt-2 block w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                        required
+                    >
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button 
+                        type="button" 
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-md transition duration-200"
+                        onclick="document.getElementById('importModal').classList.add('hidden')"
+                    >
+                        Cancel
+                    </button>
+                    <button 
+                        type="submit" 
+                        class="bg-gradient-to-r from-red-700 to-red-800 hover:from-red-800 hover:to-red-900 text-white font-semibold py-2 px-4 rounded-md shadow-md hover:shadow-lg transition duration-200"
+                    >
+                        Import
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
     <style>
         .pagination .page-item.active .page-link {
