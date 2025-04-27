@@ -47,28 +47,28 @@
                                     <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider rounded-tl-lg">
                                         #
                                     </th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                                         Issuer
                                     </th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                                         Residence
                                     </th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                                         Issue Type
                                     </th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                                         Fault Image
                                     </th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                                         Department
                                     </th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                                         Date Reported
                                     </th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                                         Status
                                     </th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider rounded-tr-lg">
+                                    <th scope="col" class="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider rounded-tr-lg">
                                         Actions
                                     </th>
                                 </tr>
@@ -79,7 +79,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
                                         {{ ($reports->currentPage() - 1) * $reports->perPage() + $loop->iteration }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-2 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
                                                 <span class="text-blue-800 font-medium">{{ strtoupper(substr($report->user->name, 0, 1)) }}</span>
@@ -98,12 +98,12 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">{{ $report->user->residence }} {{ "/"}} {{ $report->room_number }}</div>
+                                        <div class="text-sm text-gray-900">{{ $report->user->residence }} {{ "-"}} {{ $report->room_number }}</div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ $report->category ?? "N/A" }}</div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         @if($report->image)
                                             <a href="{{ Storage::url($report->image) }}" target="_blank" class="block">
                                                 <div class="flex-shrink-0 h-16 w-16 rounded-md overflow-hidden border border-gray-200">
@@ -116,20 +116,20 @@
                                             <span class="text-gray-400 text-xs italic">No image</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">{{ $report->category ?? "N/A" }} Department</div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">{{ $report->created_at->format('M d, Y H:i') ?? "N/A" }}</div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         <span class="px-2.5 py-1 text-xs font-medium rounded-full 
                                             {{ $report->status === 'solved' ? 'bg-green-100 text-green-800' : 
                                                ($report->validated ? 'bg-blue-100 text-blue-800' : 'bg-yellow-100 text-yellow-800') }}">
                                             {{ $report->validated ? 'Validated' : ($report->status ?? "Pending") }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex items-center space-x-4">
                                             @if(!$report->validated)
                                             <form 
@@ -148,7 +148,7 @@
                                                     <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                                     </svg>
-                                                    Validate
+                                                    {{-- Validate --}}
                                                 </button>
                                             </form>
                                             @endif
@@ -162,7 +162,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                                 </svg>
-                                                View
+                                                {{-- View --}}
                                             </a>
 
                                             @if($report->status === 'solved')
@@ -175,7 +175,7 @@
                                                     <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
                                                     </svg>
-                                                    Feedback
+                                                    {{-- Feedback --}}
                                                 </button>
                                             @endif
                                             
@@ -195,7 +195,7 @@
                                                     <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                                     </svg>
-                                                    Remove
+                                                    {{-- Remove --}}
                                                 </button>
                                             </form>
                                         </div>

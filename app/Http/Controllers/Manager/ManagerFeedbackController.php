@@ -12,12 +12,12 @@ class ManagerFeedbackController extends Controller
     public function index()
     {
         $feedbacks = Feedback::with('user')->latest()->get();
-        return view('feedbacks.index', compact('feedbacks'));
+        return view('manager.feedbacks', compact('feedbacks'));
     }
 
     public function create()
     {
-        return view('feedbacks.create');
+        return view('manager.feedbacks.create');
     }
 
     public function store(Request $request)
@@ -31,6 +31,6 @@ class ManagerFeedbackController extends Controller
             'comments' => $request->comments,
         ]);
 
-        return redirect()->route('feedbacks.index')->with('success', 'Feedback submitted successfully.');
+        return redirect()->route('manager.feedbacks')->with('success', 'Feedback submitted successfully.');
     }
 }

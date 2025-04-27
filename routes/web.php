@@ -183,12 +183,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->middleware('role:assistant');
         Route::resource('feedbacks', AssistantFeedbackController::class)->except(['index'])
             ->names([
-                'create' => 'feedbacks.reports.create',
-                'store' => 'feedbacks.reports.store',
-                'show' => 'feedbacks.reports.show',
-                'edit' => 'feedbacks.reports.edit',
-                'update' => 'feedbacks.reports.update',
-                'destroy' => 'feedbacks.reports.destroy',
+                'create' => 'assistant.feedbacks.create',
+                'store' => 'assistant.feedbacks.store',
+                'show' => 'assistant.feedbacks.show',
+                'edit' => 'assistant.feedbacks.edit',
+                'update' => 'assistant.feedbacks.update',
+                'destroy' => 'assistant.feedbacks.destroy',
             ]);
         Route::get('/assistant/reports/{report}', [ReportsController::class, 'show'])->name('assistant.reports.show');
         Route::post('/assistant/reports/{report}/validate', [ReportsController::class, 'validate'])->name('assistant.reports.validate');
