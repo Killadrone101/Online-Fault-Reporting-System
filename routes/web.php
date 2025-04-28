@@ -114,6 +114,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'update' => 'manager.reports.update',
                 'destroy' => 'manager.reports.destroy',
             ]);
+            Route::post('/reports/{report}/assign', [ManagerFaultReportController::class, 'assign'])->name('manager.reports.assign');
+            Route::post('/reports/{report}/unassign', [ManagerFaultReportController::class, 'unassign'])->name('manager.reports.unassign');
     });
 
     //=======================================================================================

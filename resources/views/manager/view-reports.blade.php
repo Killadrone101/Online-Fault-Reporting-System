@@ -68,6 +68,39 @@
                         </form>
                     </div>
 
+                    <!-- Worker Assignment Section -->
+                    <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">Assign Worker</h4>
+                        <form method="POST" action="{{ route('manager.reports.assign', $workers) }}">
+                            @csrf
+                            <div class="flex items-center space-x-4">
+                                <select name="worker_id" class="rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                    <option value="">-- Select a worker --</option>
+                                    @foreach($workers as $worker)
+                                        <option value="{{ $worker->worker_id }}">
+                                            {{ $worker->name }} 
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    {{ 'Assign' }}
+                                </button>
+                            </div>
+                        </form>
+                        
+                        
+                        <div class="mt-3">
+                            <p class="text-sm text-gray-600">
+                                Currently assigned to: 
+                                @if($worker->report_id === $report->report_id)
+                                    {{ $worker->name }}
+                                @else
+                                    <span class="font-medium text-red-600">{{ "Unassigned" }}</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+
                     <!-- Solution Details (if solved) -->
                     @if($report->status === 'solved' && $report->solved_at)
                     <div class="mt-6 pt-6 border-t">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\FaultReport;
+use App\Models\Worker;
 use Illuminate\Http\Request;
 
 class ManagerFaultReportController extends Controller
@@ -41,9 +42,11 @@ class ManagerFaultReportController extends Controller
      */
     public function show(FaultReport $report)
     {
-        // Laravel will automatically fetch the report
-        // $report->load('user'); // Eager load user relationship
-        return view('manager.view-reports', compact('report'));
+        
+        $workers = Worker::get();
+        $assignedWorker = Worker::where('report_id', $report->report_id)->get(); // Get the currently assigned worker if any
+
+        return view('manager.view-reports', compact('report','workers', 'assignedWorker'));
     }
 
     /**
@@ -52,6 +55,27 @@ class ManagerFaultReportController extends Controller
     public function edit(string $id)
     {
         //
+    }
+
+
+    public function assign(Request $request, Worker $worker)
+    {
+        $request->validate([
+            'worker_id' => 'required|exists:workers'
+        ]);
+        
+        $worker->worker_id = $request->worker_id;
+        $worker->update();
+        
+        return redirect()->back()->with('success', 'Worker assigned successfully!');
+    }
+
+    public function unassign(FaultReport $report)
+    {
+        $report->worker_id = null;
+        $report->save();
+        
+        return redirect()->back()->with('success', 'Worker unassigned successfully!');
     }
 
     /**
