@@ -95,12 +95,17 @@
                                     <div class="flex text-sm text-gray-600">
                                         <label for="image" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
                                             <span>Upload a file</span>
-                                            <input id="image" name="image" type="file" accept="image/*" class="sr-only">
+                                            <input id="image" name="image" type="file" accept="image/*" class="sr-only" onchange="previewImage(event)">
                                         </label>
                                         <p class="pl-1">or drag and drop</p>
                                     </div>
                                     <p class="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
                                 </div>
+                            </div>
+                            <!-- Image Preview -->
+                            <div id="image-preview" class="mt-4 hidden">
+                                <p class="text-sm text-gray-600 mb-2">Selected Image:</p>
+                                <img id="preview" src="#" alt="Image Preview" class="max-w-full h-auto rounded-lg shadow-md">
                             </div>
                             @error('image')
                                 <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span>
@@ -123,4 +128,23 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const previewContainer = document.getElementById('image-preview');
+            const previewImage = document.getElementById('preview');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 </x-app-layout>
