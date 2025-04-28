@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Faker\Factory as Faker;
 
 class StudentSeeder extends Seeder
 {
@@ -13,11 +14,31 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
-        $students = [
-            ['name' => 'John Doe', 'student_id' => '201901470'],
-            ['name' => 'Jane Smith', 'student_id' => '201902345'],
-            ['name' => 'Alice Brown', 'student_id' => '201903678'],
+        $faker = Faker::create();
+
+        // Common last names for more realistic names
+        $lastNames = [
+            'Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Miller', 'Davis', 'Garcia',
+            'Rodriguez', 'Wilson', 'Martinez', 'Anderson', 'Taylor', 'Thomas', 'Hernandez',
+            'Moore', 'Martin', 'Jackson', 'Thompson', 'White', 'Lopez', 'Lee', 'Gonzalez',
+            'Harris', 'Clark', 'Lewis', 'Robinson', 'Walker', 'Perez', 'Hall', 'Young',
+            'Allen', 'Sanchez', 'Wright', 'King', 'Scott', 'Green', 'Baker', 'Adams',
+            'Nelson', 'Hill', 'Ramirez', 'Campbell', 'Mitchell', 'Roberts', 'Carter', 'Phillips'
         ];
+
+        $students = [];
+
+        for ($i = 0; $i < 100; $i++) {
+            $firstName = $faker->firstName;
+            $lastName = $faker->randomElement($lastNames);
+            $year = 2019; // Starting year
+            $sequence = str_pad($i + 1, 3, '0', STR_PAD_LEFT); // 001 to 100
+            
+            $students[] = [
+                'name' => $firstName . ' ' . $lastName,
+                'student_id' => $year . $sequence,
+            ];
+        }
 
         foreach ($students as $student) {
             $nameParts = explode(' ', $student['name']);
