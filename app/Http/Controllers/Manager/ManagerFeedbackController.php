@@ -11,7 +11,7 @@ class ManagerFeedbackController extends Controller
 {
     public function index()
     {
-        $feedbacks = Feedback::with('user')->latest()->get();
+        $feedbacks = Feedback::with('user','report')->latest()->get();
         return view('manager.feedbacks', compact('feedbacks'));
     }
 
