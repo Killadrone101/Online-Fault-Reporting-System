@@ -48,6 +48,7 @@ class StudentFaultReportController extends Controller
         $report = new FaultReport();
         $report->user_id = Auth::id();
         $report->category = $validated['issue_type'];
+        $report->room_number = $validated['room_number'];
         $report->description = $validated['description'];
         $report->status = 'pending'; // Default status
 

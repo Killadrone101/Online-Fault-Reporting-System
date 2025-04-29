@@ -37,7 +37,7 @@
                             </div>
                     
                             <!-- Block Dropdown -->
-                            <div class="space-y-2">
+                            {{-- <div class="space-y-2">
                                 <x-input-label for="block" value="{{ __('Block *') }}" class="font-medium" />
                                 <select id="block" name="block" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150 ease-in-out py-2 px-3 border" required>
                                     <option value="" disabled selected>Select your block</option>
@@ -55,7 +55,7 @@
                                 @error('block')
                                     <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <!-- Room Number -->
                             <div class="space-y-2">
