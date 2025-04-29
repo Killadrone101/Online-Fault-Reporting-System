@@ -26,7 +26,7 @@ class FeedbackController extends Controller
         $request->validate([
             'report_id' => 'required|exists:fault_reports,report_id',
             'comments' => 'required|string|max:1000',
-            'student_validation' => 'nullable|boolean'
+            // 'student_validation' => 'nullable|boolean'
         ]);
 
         // Check if the report belongs to the student
@@ -43,7 +43,7 @@ class FeedbackController extends Controller
         Feedback::create([
             'report_id' => $request->report_id,
             'comments' => $request->comments,
-            'student_validation' => $request->has('student_validation')
+            'student_validation' => true
         ]);
 
         return redirect()->back()->with('success', 'Thank you for your feedback!');

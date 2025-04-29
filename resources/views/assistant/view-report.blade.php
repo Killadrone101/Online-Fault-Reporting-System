@@ -144,7 +144,7 @@
                                 </div>
                                 
                                 <div class="mt-4 flex items-center">
-                                    <input id="student_validation" name="student_validation" type="checkbox" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                    <input id="student_validation" name="student_validation" type="checkbox" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded" required>
                                     <label for="student_validation" class="ml-2 block text-sm text-gray-700">
                                         Confirm the issue has been resolved to your satisfaction
                                     </label>
